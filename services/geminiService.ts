@@ -1,8 +1,10 @@
-
 import { GoogleGenAI, Chat, GenerateContentResponse } from "@google/genai";
 import { ITINERARY_DATA } from '../constants';
 
-const apiKey = process.env.API_KEY || '';
+// Handle API Key for Vite environment (import.meta.env)
+// Vercel injects env vars into import.meta.env
+const apiKey = (import.meta as any).env?.VITE_API_KEY || '';
+
 const ai = new GoogleGenAI({ apiKey });
 
 // Construct a system prompt that includes the specific itinerary context
