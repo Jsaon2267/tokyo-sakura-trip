@@ -1,121 +1,126 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { ITINERARY_DATA, APP_NAME } from './constants';
 import DayCard from './components/DayCard';
 import ChatWidget from './components/ChatWidget';
-import { Plane, Map, Flower2, Info, Github } from 'lucide-react';
+import { Plane, Map, Flower2, Info, Github, ChevronLeft, ChevronRight, CalendarDays } from 'lucide-react';
 
 const App: React.FC = () => {
+  const [currentDayIndex, setCurrentDayIndex] = useState(0);
+
+  const handlePrevDay = () => {
+    setCurrentDayIndex((prev) => (prev > 0 ? prev - 1 : prev));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNextDay = () => {
+    setCurrentDayIndex((prev) => (prev < ITINERARY_DATA.length - 1 ? prev + 1 : prev));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleTabClick = (index: number) => {
+    setCurrentDayIndex(index);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50 selection:bg-sakura-200 selection:text-sakura-900">
+    <div className="min-h-screen bg-slate-50 selection:bg-sakura-200 selection:text-sakura-900 font-sans pb-20">
       
       {/* Hero Section */}
-      <header className="relative bg-white border-b border-slate-200 overflow-hidden">
-        {/* Clean gradient background instead of image */}
-        <div className="absolute inset-0 bg-gradient-to-br from-sakura-50 to-white"></div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-            <div>
-              <div className="flex items-center gap-2 text-sakura-600 font-bold tracking-widest uppercase mb-2">
-                 <Flower2 size={18} className="animate-spin-slow" />
-                 <span>4月15日 - 4月21日</span>
-              </div>
-              <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-4">
-                {APP_NAME}
-              </h1>
-              <p className="text-lg md:text-xl text-slate-600 max-w-2xl leading-relaxed">
-                精心策劃的東京 7 日之旅。從新宿的霓虹燈光到迪士尼的魔法世界，體驗傳統與未來的完美融合。
-              </p>
+      <header className="relative bg-white border-b border-slate-200">
+        <div className="absolute inset-0 bg-gradient-to-br from-sakura-50/50 to-white pointer-events-none"></div>
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 text-center">
+            <div className="inline-flex items-center gap-2 text-sakura-600 font-bold tracking-widest uppercase mb-3 bg-sakura-50 px-4 py-1.5 rounded-full text-xs md:text-sm">
+               <Flower2 size={16} className="animate-spin-slow" />
+               <span>4月15日 - 4月21日</span>
             </div>
-            
-            <div className="flex gap-3">
-               <div className="flex flex-col items-center p-3 bg-white/80 backdrop-blur rounded-xl border border-slate-200 shadow-sm">
-                  <span className="text-xs font-bold text-slate-400 uppercase">天數</span>
-                  <span className="text-xl font-bold text-indigo-600">7 天</span>
-               </div>
-               <div className="flex flex-col items-center p-3 bg-white/80 backdrop-blur rounded-xl border border-slate-200 shadow-sm">
-                  <span className="text-xs font-bold text-slate-400 uppercase">主題</span>
-                  <span className="text-xl font-bold text-sakura-600">文化深度</span>
-               </div>
-            </div>
-          </div>
+            <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
+              {APP_NAME}
+            </h1>
+            <p className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              您的專屬東京旅程指南。點擊下方日期，探索每一天的精彩細節與達人貼士。
+            </p>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Main Content Area */}
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         
-        {/* Intro Stats/Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-           <div className="bg-gradient-to-br from-indigo-600 to-indigo-800 rounded-2xl p-6 text-white shadow-lg flex items-start gap-4">
-              <div className="p-3 bg-white/10 rounded-lg">
-                <Plane size={24} />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg">抵達資訊</h3>
-                <p className="text-indigo-100 text-sm mt-1">成田 (NRT) 或羽田 (HND) 機場，搭乘 N'EX 或單軌電車。</p>
-              </div>
-           </div>
-           
-           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-start gap-4">
-              <div className="p-3 bg-sakura-100 text-sakura-600 rounded-lg">
-                <Map size={24} />
-              </div>
-              <div>
-                <h3 className="font-bold text-slate-800 text-lg">重點區域</h3>
-                <p className="text-slate-500 text-sm mt-1">新宿、澀谷、淺草、銀座、東京灣。</p>
-              </div>
-           </div>
-
-           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-start gap-4">
-              <div className="p-3 bg-amber-100 text-amber-600 rounded-lg">
-                <Info size={24} />
-              </div>
-              <div>
-                <h3 className="font-bold text-slate-800 text-lg">旅遊貼士</h3>
-                <p className="text-slate-500 text-sm mt-1">建議購買 Suica/Pasmo 交通卡以便搭車。</p>
-              </div>
-           </div>
-        </div>
-
-        {/* Itinerary Timeline */}
-        <div className="relative">
-          {/* Central Line for Desktop */}
-          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-slate-200 -translate-x-1/2"></div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+        {/* Navigation Tabs (Scrollable on mobile) */}
+        <div className="mb-8 sticky top-4 z-30">
+          <div className="bg-white/80 backdrop-blur-lg p-2 rounded-2xl shadow-lg border border-slate-200/50 flex overflow-x-auto gap-2 no-scrollbar snap-x">
             {ITINERARY_DATA.map((day, index) => {
-               // Staggered layout logic
-               return (
-                  <div key={day.id} className={`${isEven(index) ? 'md:pr-12 md:text-right' : 'md:pl-12 md:mt-24'} relative`}>
-                     {/* Dot on timeline */}
-                     <div className={`hidden md:block absolute top-8 w-4 h-4 rounded-full bg-white border-4 border-sakura-400 z-10 shadow-sm ${isEven(index) ? '-right-[40px] translate-x-1/2' : '-left-[40px] -translate-x-1/2'}`} />
-                     
-                     <DayCard day={day} index={index} />
-                  </div>
-               );
+              const isActive = index === currentDayIndex;
+              return (
+                <button
+                  key={day.id}
+                  onClick={() => handleTabClick(index)}
+                  className={`flex-none snap-start min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex flex-col items-center gap-1
+                    ${isActive 
+                      ? 'bg-slate-900 text-white shadow-md scale-105' 
+                      : 'bg-transparent text-slate-500 hover:bg-slate-100 hover:text-slate-800'
+                    }`}
+                >
+                  <span className={`text-[10px] uppercase tracking-wider ${isActive ? 'text-sakura-300' : 'text-slate-400'}`}>
+                    Day {index + 1}
+                  </span>
+                  <span>{day.date}</span>
+                </button>
+              );
             })}
           </div>
+        </div>
+
+        {/* Current Day Card */}
+        <div className="mb-8 min-h-[600px]">
+           <DayCard day={ITINERARY_DATA[currentDayIndex]} />
+        </div>
+
+        {/* Pagination Buttons */}
+        <div className="flex justify-between items-center gap-4">
+          <button 
+            onClick={handlePrevDay}
+            disabled={currentDayIndex === 0}
+            className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-white rounded-xl shadow-sm border border-slate-200 text-slate-700 font-bold hover:bg-slate-50 hover:border-sakura-200 hover:text-sakura-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all group"
+          >
+            <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+            <span className="hidden md:inline">上一天</span>
+            <span className="md:hidden">Prev</span>
+          </button>
+          
+          <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+            {currentDayIndex + 1} / {ITINERARY_DATA.length}
+          </div>
+
+          <button 
+            onClick={handleNextDay}
+            disabled={currentDayIndex === ITINERARY_DATA.length - 1}
+            className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-slate-900 rounded-xl shadow-lg shadow-slate-900/20 text-white font-bold hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all group"
+          >
+            <span className="hidden md:inline">下一天</span>
+            <span className="md:hidden">Next</span>
+            <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+          </button>
         </div>
 
       </main>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-slate-400 py-12 mt-12">
+      <footer className="bg-white border-t border-slate-200 py-10 mt-12">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="mb-4 text-lg font-light text-slate-300">"一期一會" (Ichi-go ichi-e)</p>
-          <div className="w-12 h-0.5 bg-slate-700 mx-auto mb-6"></div>
-          <p className="text-sm mb-6">由 React, Tailwind 和 Gemini AI 打造</p>
+          <div className="flex justify-center items-center gap-2 mb-4 text-sakura-500">
+             <Flower2 size={20} />
+          </div>
+          <p className="mb-6 text-slate-500 font-medium text-sm">祝您有一趟美好的東京之旅 🌸</p>
           
           <a 
             href="https://github.com" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-all text-sm font-medium"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all text-sm font-bold"
           >
             <Github size={18} />
-            <span>View on GitHub</span>
+            <span>GitHub Repository</span>
           </a>
         </div>
       </footer>
@@ -125,10 +130,5 @@ const App: React.FC = () => {
     </div>
   );
 };
-
-// Helper for staggered layout readability
-function isEven(n: number) {
-   return n % 2 === 0;
-}
 
 export default App;

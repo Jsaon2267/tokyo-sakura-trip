@@ -3,6 +3,7 @@ export interface Activity {
   name: string;
   description: string;
   duration?: string;
+  tips?: string[]; // 新增：景點特色與貼士
 }
 
 export interface Meal {
